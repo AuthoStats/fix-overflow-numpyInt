@@ -25,6 +25,7 @@ import logging
 import unittest
 import sys
 import math
+import numpy
 
 from phe import paillier
 
@@ -1094,6 +1095,10 @@ class TestIssue62(unittest.TestCase):
         # This will raise OverflowError without bugfix #73.
         priv.decrypt(a + b)
 
+class TestNumpyOverflow(unittest.TestCase):
+    def testNumpyOverflow(self):
+        public_key, private_key = paillier.generate_paillier_keypair()
+        private_key.decrypt(public_key.encrypt(numpy.int64(0),precision=2**-12))
 
 def main():
     unittest.main()
